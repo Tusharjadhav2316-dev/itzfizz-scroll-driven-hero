@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 240" fill="none" class="w-full h-full">
+  <defs>
+    <!-- Gradients for realistic automotive paint and reflections -->
+    <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ea580c"/>
+      <stop offset="25%" stop-color="#f97316"/>
+      <stop offset="60%" stop-color="#fb923c"/>
+      <stop offset="100%" stop-color="#c2410c"/>
+    </linearGradient>
+    <linearGradient id="roofGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#09090b"/>
+      <stop offset="70%" stop-color="#18181b"/>
+      <stop offset="100%" stop-color="#27272a"/>
+    </linearGradient>
+    <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" stop-opacity="0.95"/>
+      <stop offset="40%" stop-color="#0f172a" stop-opacity="0.98"/>
+      <stop offset="70%" stop-color="#38bdf8" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#020617" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="rimGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#52525b"/>
+      <stop offset="50%" stop-color="#18181b"/>
+      <stop offset="100%" stop-color="#71717a"/>
+    </linearGradient>
+    <linearGradient id="metalSheen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.4"/>
+      <stop offset="30%" stop-color="#ffffff" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.3"/>
+    </linearGradient>
+    <filter id="carShadow" x="-10%" y="-10%" width="120%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#carShadow)">
+    <!-- Undercarriage & Diffuser Shadow -->
+    <path d="M90 205 L720 205 L735 210 L75 210 Z" fill="#09090b"/>
+    
+    <!-- Front Splitter & Rear Diffuser -->
+    <path d="M720 185 L745 192 L750 202 L710 203 Z" fill="#18181b"/>
+    <path d="M60 195 L80 198 L95 204 L55 202 Z" fill="#18181b"/>
+
+    <!-- Main Aerodynamic Body Shell -->
+    <path d="M62 188 
+             C65 178 80 168 105 165
+             C120 162 135 160 165 158
+             C210 152 255 125 320 102
+             C375 82 460 76 530 85
+             C580 92 630 115 670 145
+             C705 160 735 168 745 182
+             C748 188 746 195 738 198
+             C715 200 690 198 670 198
+             C665 160 615 155 585 185
+             C570 198 555 198 400 198
+             C390 198 380 198 365 198
+             C350 160 300 155 270 185
+             C255 198 230 198 120 198
+             C90 198 68 198 62 188 Z" 
+          fill="url(#bodyGrad)"/>
+
+    <!-- Body Highlight Overlays -->
+    <path d="M62 188 
+             C65 178 80 168 105 165
+             C120 162 135 160 165 158
+             C210 152 255 125 320 102
+             C375 82 460 76 530 85
+             C580 92 630 115 670 145
+             C705 160 735 168 745 182
+             L735 185
+             C700 170 660 150 620 125
+             C560 95 480 88 430 90
+             C360 95 290 120 230 155
+             C180 168 120 172 75 188 Z" 
+          fill="url(#metalSheen)"/>
+
+    <!-- Aerodynamic Side Contour Line -->
+    <path d="M115 165 C220 162 310 172 450 165 C540 160 630 152 725 180" 
+          stroke="#7c2d12" stroke-width="2" fill="none" opacity="0.6"/>
+    <path d="M130 175 C240 170 330 182 430 178 C510 174 580 172 650 188" 
+          stroke="#ffedd5" stroke-width="1.5" fill="none" opacity="0.4"/>
+
+    <!-- Cabin / Greenhouse Roof Frame -->
+    <path d="M280 142 
+             C315 110 365 88 430 84 
+             C505 84 565 105 605 138 
+             C580 140 400 142 280 142 Z" 
+          fill="url(#roofGrad)"/>
+
+    <!-- Tinted Glass Windows -->
+    <path d="M295 138 
+             C325 112 370 93 430 89 
+             C480 89 515 95 530 102 
+             L530 138 Z" 
+          fill="url(#glassGrad)"/>
+    <path d="M540 105 
+             C558 112 578 124 595 138 
+             L540 138 Z" 
+          fill="url(#glassGrad)"/>
+
+    <!-- Window Pillars & Mirror -->
+    <line x1="535" y1="92" x2="535" y2="138" stroke="#09090b" stroke-width="4"/>
+    <!-- Side Mirror -->
+    <path d="M525 132 C515 125 500 126 495 134 C500 138 520 138 525 132 Z" fill="#09090b"/>
+
+    <!-- Headlight (LED Cyan/White Glow) -->
+    <path d="M725 174 L742 180 L730 185 Z" fill="#38bdf8"/>
+    <path d="M720 176 L738 181 L725 183 Z" fill="#ffffff"/>
+
+    <!-- Taillight (LED Crimson Bar) -->
+    <path d="M63 178 L74 179 L72 184 L64 183 Z" fill="#ef4444"/>
+
+    <!-- Front Wheel Arch -->
+    <path d="M575 195 A 42 42 0 0 1 658 195 Z" fill="#09090b"/>
+    <!-- Front Wheel Tire -->
+    <circle cx="616" cy="195" r="40" fill="#18181b" stroke="#27272a" stroke-width="3"/>
+    <circle cx="616" cy="195" r="28" fill="url(#rimGrad)"/>
+    <!-- Front Rim Spokes -->
+    <circle cx="616" cy="195" r="10" fill="#09090b"/>
+    <line x1="616" y1="168" x2="616" y2="222" stroke="#e4e4e7" stroke-width="2.5"/>
+    <line x1="589" y1="195" x2="643" y2="195" stroke="#e4e4e7" stroke-width="2.5"/>
+    <line x1="597" y1="176" x2="635" y2="214" stroke="#e4e4e7" stroke-width="2.5"/>
+    <line x1="597" y1="214" x2="635" y2="176" stroke="#e4e4e7" stroke-width="2.5"/>
+    <!-- Brake Caliper (Performance Green) -->
+    <path d="M602 180 A 18 18 0 0 1 625 175" stroke="#22c55e" stroke-width="4" fill="none"/>
+
+    <!-- Rear Wheel Arch -->
+    <path d="M260 195 A 42 42 0 0 1 343 195 Z" fill="#09090b"/>
+    <!-- Rear Wheel Tire -->
+    <circle cx="301" cy="195" r="40" fill="#18181b" stroke="#27272a" stroke-width="3"/>
+    <circle cx="301" cy="195" r="28" fill="url(#rimGrad)"/>
+    <!-- Rear Rim Spokes -->
+    <circle cx="301" cy="195" r="10" fill="#09090b"/>
+    <line x1="301" y1="168" x2="301" y2="222" stroke="#e4e4e7" stroke-width="2.5"/>
+    <line x1="274" y1="195" x2="328" y2="195" stroke="#e4e4e7" stroke-width="2.5"/>
+    <line x1="282" y1="176" x2="320" y2="214" stroke="#e4e4e7" stroke-width="2.5"/>
+    <line x1="282" y1="214" x2="320" y2="176" stroke="#e4e4e7" stroke-width="2.5"/>
+    <!-- Rear Brake Caliper (Performance Green) -->
+    <path d="M287 180 A 18 18 0 0 1 310 175" stroke="#22c55e" stroke-width="4" fill="none"/>
+  </g>
+</svg>
