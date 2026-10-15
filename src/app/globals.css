@@ -28,6 +28,7 @@ body {
 .value-letter {
   display: inline-block;
   user-select: none;
+  transition: opacity 0.08s ease-out;
 }
 
 .road {

@@ -85,13 +85,26 @@ export const Hero: React.FC = () => {
 
       const measureLetterPositions = () => {
         const roadEl = document.getElementById("road");
-        if (!roadEl) return;
-        const roadRect = roadEl.getBoundingClientRect();
+        const moverEl = document.getElementById("car-mover");
+        if (!roadEl || !moverEl) return;
+
         const letters = roadEl.querySelectorAll<HTMLElement>(".value-letter");
-        letterOffsets = Array.from(letters).map((letter) => {
-          const letterRect = letter.getBoundingClientRect();
-          // Trigger point: reveal when car's front reaches the letter
-          return letterRect.left - roadRect.left;
+        if (letters.length === 0) return;
+
+        const roadWidth = roadEl.clientWidth;
+        const carWidth = moverEl.offsetWidth;
+        const startOffset =
+          window.innerWidth < 640 ? 8 : window.innerWidth < 768 ? 16 : 24;
+        const endPadding = window.innerWidth < 640 ? 12 : 24;
+        const maxTravel = Math.max(0, roadWidth - carWidth - startOffset - endPadding);
+
+        // Leading edge starts at startOffset + carWidth * 0.8 and sweeps maxTravel
+        const initialLeadingEdge = startOffset + carWidth * 0.8;
+        // Calibrated reveal runway: reveals all 14 letters in sequence across the active travel span
+        const activeSpan = Math.max(100, maxTravel * 0.65);
+
+        letterOffsets = Array.from(letters).map((_, i) => {
+          return initialLeadingEdge + 12 + (i / Math.max(1, letters.length - 1)) * activeSpan;
         });
       };
 
@@ -130,19 +143,38 @@ export const Hero: React.FC = () => {
           return;
         }
 
-        // Letter-by-letter reveal check: reveal when car's leading edge reaches and passes letter
+        // Smooth progressive letter-by-letter reveal: calibrated fade window across car passage
         const carLeadingEdgeX = moverRect.left - roadRect.left + moverRect.width * 0.8;
+        const fadeWindow = 28; // 28px smooth gradient transition per letter
+
         letters.forEach((letter, i) => {
           const targetOffset = letterOffsets[i];
           if (targetOffset !== undefined) {
-            if (carLeadingEdgeX >= targetOffset) {
-              if (letter.style.opacity !== "1") letter.style.opacity = "1";
+            const delta = carLeadingEdgeX - targetOffset;
+            let targetOpacity: number;
+            if (delta <= 0) {
+              targetOpacity = 0;
+            } else if (delta >= fadeWindow) {
+              targetOpacity = 1;
             } else {
-              if (letter.style.opacity !== "0") letter.style.opacity = "0";
+              targetOpacity = delta / fadeWindow;
+            }
+
+            const formattedOpacity =
+              targetOpacity === 0 ? "0" : targetOpacity === 1 ? "1" : targetOpacity.toFixed(2);
+            if (letter.style.opacity !== formattedOpacity) {
+              letter.style.opacity = formattedOpacity;
             }
           }
         });
       };
+
+      // Refresh measurements once web fonts are fully loaded
+      if (typeof document !== "undefined" && document.fonts?.ready) {
+        document.fonts.ready.then(() => {
+          measureLetterPositions();
+        });
+      }
 
       // 3. Page-load intro timeline for header, road, car entrance, and footer
       const introTl = gsap.timeline({
@@ -189,14 +221,14 @@ export const Hero: React.FC = () => {
           "-=0.3"
         );
 
-      // 4. Master ScrollTrigger timeline with tuned scrub physics (0.65s)
+      // 4. Master ScrollTrigger timeline with tuned scrub physics (0.8s for ultra-smooth mouse and keypad glide)
       const masterScrollTl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
           end: "+=2200",
           pin: true,
-          scrub: 0.65,
+          scrub: 0.8,
           invalidateOnRefresh: true,
           anticipatePin: 1,
           onRefresh: () => {
@@ -371,11 +403,11 @@ export const Hero: React.FC = () => {
             {/* Art-directed Two-Level Racing Typographic Composition */}
             <div
               id="valueText"
-              className="value-add absolute inset-0 z-20 flex flex-col justify-center items-start pl-6 sm:pl-10 md:pl-14 lg:pl-16 pr-16 sm:pr-24 md:pr-32 lg:pr-44 pointer-events-none select-none w-full"
+              className="value-add absolute inset-0 z-20 flex flex-col justify-center items-start pl-6 sm:pl-10 md:pl-14 lg:pl-16 pr-6 sm:pr-10 md:pr-14 lg:pr-16 pointer-events-none select-none max-w-full"
             >
               <h1
                 aria-label="WELCOME ITZFIZZ"
-                className="font-headline italic flex flex-col items-start leading-[0.88] uppercase tracking-normal w-full"
+                className="font-headline italic flex flex-col items-start leading-[0.88] uppercase tracking-normal"
               >
                 {/* Accessible screen-reader text */}
                 <span className="sr-only">WELCOME ITZFIZZ</span>
@@ -383,7 +415,7 @@ export const Hero: React.FC = () => {
                 {/* Upper Level: WELCOME */}
                 <div
                   aria-hidden="true"
-                  className="headline-welcome flex items-center gap-2 sm:gap-3 mb-1 sm:mb-1.5 w-full max-w-md sm:max-w-xl md:max-w-2xl"
+                  className="headline-welcome flex items-center gap-2 sm:gap-3 mb-1 sm:mb-1.5"
                 >
                   {/* Angled geometric racing accent */}
                   <span className="racing-accent flex items-center gap-1 select-none pointer-events-none">
@@ -408,16 +440,16 @@ export const Hero: React.FC = () => {
                   <span className="racing-accent hidden sm:inline-block h-[1.5px] w-8 sm:w-16 md:w-24 bg-gradient-to-r from-emerald-400/80 via-emerald-500/30 to-transparent rounded-full ml-1" />
                 </div>
 
-                {/* Lower Level: ITZFIZZ Wordmark distributed across full usable road */}
+                {/* Lower Level: Complete ITZFIZZ Wordmark */}
                 <div
                   aria-hidden="true"
-                  className="headline-itzfizz relative flex items-baseline justify-between w-full font-black text-[clamp(2.4rem,6vw,5.25rem)] leading-none select-none"
+                  className="headline-itzfizz relative inline-flex items-baseline font-black text-[clamp(2.4rem,6vw,5.25rem)] leading-none select-none tracking-normal"
                 >
                   {/* Subtle emerald back-glow behind wordmark */}
-                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-48 sm:w-64 h-24 sm:h-32 bg-emerald-500/12 blur-3xl rounded-full pointer-events-none -z-10" />
+                  <div className="absolute -left-6 top-1/2 -translate-y-1/2 w-48 sm:w-64 h-24 sm:h-32 bg-emerald-500/15 blur-3xl rounded-full pointer-events-none -z-10" />
 
                   {/* ITZ in white */}
-                  <span className="wordmark-itz flex gap-4 sm:gap-8 md:gap-14 lg:gap-20 text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)]">
+                  <span className="wordmark-itz inline-flex text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)]">
                     {ITZ_LETTERS.map((letter, index) => (
                       <span
                         key={`i-${index}`}
@@ -429,7 +461,7 @@ export const Hero: React.FC = () => {
                   </span>
 
                   {/* FIZZ in vivid emerald green */}
-                  <span className="wordmark-fizz flex gap-4 sm:gap-8 md:gap-14 lg:gap-20 text-[#00ff87] drop-shadow-[0_0_24px_rgba(0,255,135,0.4)] drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)]">
+                  <span className="wordmark-fizz inline-flex text-[#00ff87] drop-shadow-[0_0_24px_rgba(0,255,135,0.4)] drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)]">
                     {FIZZ_LETTERS.map((letter, index) => (
                       <span
                         key={`f-${index}`}
